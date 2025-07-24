@@ -1,15 +1,54 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# dependencies
+# Node dependencies
 node_modules/
 
-# Expo
+# Expo/React Native
 .expo/
 dist/
 web-build/
 expo-env.d.ts
+*.expo/*
+*.expo-shared/*
+*.log
 
-# Native
+# Android
+android/.gradle/
+android/app/build/
+android/build/
+android/.idea/
+android/local.properties
+android/key.properties
+android/keystores/
+android/*.iml
+*.apk
+*.ap_*
+*.cxx/
+*.dex
+*.so
+*.class
+*.hprof
+
+# iOS
+ios/build/
+ios/Pods/
+ios/Podfile.lock
+ios/Podfile.properties.json
+ios/*.xcworkspace
+ios/*.xcodeproj
+ios/*.pbxuser
+ios/*.mode1v3
+ios/*.mode2v3
+ios/*.perspectivev3
+ios/*.xcuserstate
+ios/.DS_Store
+ios/DerivedData/
+ios/*.xcuserdata
+ios/*.moved-aside
+ios/*.xcscmblueprint
+ios/*.xcprivacy
+
+# Native/Secrets
 .kotlin/
 *.orig.*
 *.jks
@@ -17,23 +56,73 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+*.keystore
+*.pem
+*.cer
+*.crt
+*.der
+*.csr
+*.srl
+*.pfx
+*.ipa
 
 # Metro
 .metro-health-check*
 
-# debug
+# Debug logs
 npm-debug.*
 yarn-debug.*
-yarn-error.*
+
+pnpm-debug.log*
 
 # macOS
 .DS_Store
-*.pem
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# local env files
-.env*.local
+# Environment files
+.env*
+!*.env.example
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 
+# Test coverage
+coverage/
+*.lcov
+
+# VSCode/JetBrains/IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+.history/
+
+# Miscellaneous
 app-example
+*.swp
+*.tmp
+tmp/
+temp/
+logs/
+*.bak
+*.backup
+*.orig
+*.rej
+
+# Ignore build artifacts
+build/
+out/
+
+# Ignore Expo managed assets
+assets/**/*.db
+assets/**/*.sqlite
+
+# package
+package-lock.json
