@@ -19,7 +19,6 @@ const BankDashboard = () => {
             setLoadingBalance(true);
             try {
                 const res = await apiFetch(`/account-balance?userId=${userId}`);
-                console.log(res)
                 setBalance(res.balance);
             } catch (err) {
                 setBalance(null);
