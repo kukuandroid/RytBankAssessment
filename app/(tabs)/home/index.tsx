@@ -1,11 +1,34 @@
+import { useAuth } from '@/app/context/AuthContext';
+import { apiFetch } from '@/app/utils/API';
 import InfoCard from '@/components/InfoCard';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const BankDashboard = () => {
     const [showBalance, setShowBalance] = useState(true);
+    const [balance, setBalance] = useState<string | null>(null);
+    const [loadingBalance, setLoadingBalance] = useState(false);
+    const { user } = useAuth();
+    const name = user?.name || 'Unknown User';
+    const userId = user?.id || 'fatimah123';
+
+    useEffect(() => {
+        const fetchBalance = async () => {
+            setLoadingBalance(true);
+            try {
+                const res = await apiFetch(`/account-balance?userId=${userId}`);
+                console.log(res)
+                setBalance(res.balance);
+            } catch (err) {
+                setBalance(null);
+            } finally {
+                setLoadingBalance(false);
+            }
+        };
+        fetchBalance();
+    }, [userId]);
 
     const topReads = [
         { title: 'How to Save Money', subtitle: 'Tips for better savings', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
@@ -43,7 +66,7 @@ const BankDashboard = () => {
 
             {/* Greeting */}
             <Text style={styles.greeting}>Good Evening</Text>
-            <Text style={styles.username}>Fatimah Azzahrah</Text>
+            <Text style={styles.username}>{name}</Text>
 
             {/* Account Balance Card */}
             <View style={styles.balanceCard}>
@@ -52,7 +75,7 @@ const BankDashboard = () => {
                 </View>
                 <View style={styles.balanceValueRow}>
                     <Text style={styles.balanceAmount}>
-                        {showBalance ? 'RM 2500' : '••••••'}
+                        {showBalance ? (loadingBalance ? 'Loading...' : balance ? `RM ${balance}` : 'N/A') : '••••••'}
                     </Text>
                     <TouchableOpacity onPress={() => setShowBalance((prev) => !prev)}>
                         <MaterialIcons
