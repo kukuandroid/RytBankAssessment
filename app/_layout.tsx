@@ -1,5 +1,6 @@
 // app/_layout.tsx
 import { Stack } from 'expo-router';
+import { ActivityIndicator } from 'react-native';
 import { AppProviders, useAuth } from './context/AuthContext';
 
 export default function RootLayout() {
@@ -14,11 +15,12 @@ function RootLayoutNav() {
   const { isAuthenticated, isLoadingAuth } = useAuth(); // Get authentication state
   if (isLoadingAuth) {
     // Render a splash screen or loading indicator while authentication status is being checked
-    return null; // Or <SplashScreen />
+    return <ActivityIndicator size="large" color="#000" />
   }
 
+  console.log("🚀 ~ isAuthenticated ~ isAuthenticated:", isAuthenticated)
   return (
-    <Stack>
+    <Stack key={isAuthenticated ? 'auth' : 'guest'}>
       {isAuthenticated ? (
         // If authenticated, show the tabs
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

@@ -6,7 +6,7 @@ export default function HomeStackLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ title: 'Home' }} />
       <Stack.Screen name="TransferDetail" options={{ title: 'Transfer Detail' }} />
-      <Stack.Screen name="Profile" options={{ title: 'Transfer Detail' }} />
+      <Stack.Screen name="Profile" options={{ title: 'My Profile' }} />
     </Stack>
   );
 }
