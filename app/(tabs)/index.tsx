@@ -1,9 +1,21 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import InfoCard from '../../components/InfoCard';
 
 const BankDashboard = () => {
     const [showBalance, setShowBalance] = useState(true);
+
+    const topReads = [
+        { title: 'How to Save Money', subtitle: 'Tips for better savings', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+        { title: 'Smart Investments', subtitle: 'Grow your wealth', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+        { title: 'Credit Card Guide', subtitle: 'Maximize your benefits', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
+        { title: 'Budget Planning', subtitle: 'Track your expenses', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80' },
+    ];
+    const promos = [
+        { amount: '$15.25', title: 'Promo 1', subtitle: 'every non-cash transactions', image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" },
+        { amount: '$18.00', title: 'Promo 2', subtitle: 'giving activity this month', image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" },
+    ];
 
     return (
         <ScrollView style={styles.container}>
@@ -14,11 +26,11 @@ const BankDashboard = () => {
                 </Text>
                 <View style={styles.rightIcons}>
                     <View style={styles.notification}>
-                        <MaterialIcons name='10mp' size={20} color="#fff" />
+                        <MaterialIcons name='notifications' size={20} color="#fff" />
                         <View style={styles.badge}><Text style={styles.badgeText}>5</Text></View>
                     </View>
                     <Image
-                        source={{ uri: 'https://via.placeholder.com/32x32' }}
+                        source={{ uri: 'https://cdn2.iconfinder.com/data/icons/avatars-60/5985/24-Maid-128.png' }}
                         style={styles.avatar}
                     />
                 </View>
@@ -58,16 +70,19 @@ const BankDashboard = () => {
 
             {/* Promos & Reminders */}
             <Text style={styles.sectionTitle}>Promos & Reminders</Text>
-            <View style={styles.promosContainer}>
-                <View style={styles.promoCard}>
-                    <Text style={styles.promoAmount}>$15.25</Text>
-                    <Text style={styles.promoText}>every non-cash transactions</Text>
-                </View>
-                <View style={styles.promoCard}>
-                    <Text style={styles.promoAmount}>$18.00</Text>
-                    <Text style={styles.promoText}>giving activity this month</Text>
-                </View>
-            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.infoCardsScroll} contentContainerStyle={{ paddingRight: 8 }}>
+                {promos.map((item, idx) => (
+                    <InfoCard key={idx} image={item.image} amount={item.amount} title={item.title} subtitle={item.subtitle} />
+                ))}
+            </ScrollView>
+
+            {/* Top Reads Section */}
+            <Text style={styles.sectionTitle}>Top Reads</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.infoCardsScroll} contentContainerStyle={{ paddingRight: 8 }}>
+                {topReads.map((item, idx) => (
+                    <InfoCard key={idx} image={item.image} title={item.title} subtitle={item.subtitle} />
+                ))}
+            </ScrollView>
         </ScrollView>
     );
 };
@@ -86,6 +101,9 @@ const actions: { label: string; icon: MaterialIconName }[] = [
 ];
 
 const styles = StyleSheet.create({
+    infoCardsScroll: {
+        marginBottom: 24,
+    },
     container: {
         flex: 1,
         backgroundColor: '#0F172A',
