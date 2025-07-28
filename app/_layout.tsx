@@ -1,7 +1,7 @@
 // app/_layout.tsx
 import { Stack } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
-import { AppProviders, useAuth } from './context/AuthContext';
+import { AppProviders, useAuth } from '../context/AuthContext';
 
 export default function RootLayout() {
   return (
@@ -18,18 +18,14 @@ function RootLayoutNav() {
     return <ActivityIndicator size="large" color="#000" />
   }
 
-  console.log("🚀 ~ isAuthenticated ~ isAuthenticated:", isAuthenticated)
   return (
     <Stack key={isAuthenticated ? 'auth' : 'guest'}>
       {isAuthenticated ? (
-        // If authenticated, show the tabs
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       ) : (
-        // If not authenticated, show the auth stack
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       )}
-      {/* Optionally, you can have global modals or other screens here that overlay everything */}
-      <Stack.Screen name="+not-found" />
+      {/* Only show +not-found for unmatched routes, not as a default */}
     </Stack>
   );
 }

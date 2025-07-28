@@ -1,10 +1,12 @@
-import { useAuth } from '@/app/context/AuthContext';
-import { apiFetch } from '@/app/utils/API';
+
 import InfoCard from '@/components/InfoCard';
+import { actions } from '@/constants/actions';
+import { apiFetch } from '@/utils/API';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../../../context/AuthContext';
 
 const BankDashboard = () => {
     const [showBalance, setShowBalance] = useState(true);
@@ -39,6 +41,18 @@ const BankDashboard = () => {
         { title: 'Promo 1', subtitle: 'every non-cash transactions', image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" },
         { title: 'Promo 2', subtitle: 'giving activity this month', image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" },
     ];
+
+    const handleAction = (key: string) => {
+        switch (key) {
+            case 'transfer':
+                // Handle transfer action
+                router.navigate('/home/Transfer');
+                break;
+
+            default:
+                break;
+        }
+    }
 
     // Set tab bar height to match your floating tab bar style
     const TAB_BAR_HEIGHT = 64 + 24 + 80; // height + bottom + top margin
@@ -87,7 +101,7 @@ const BankDashboard = () => {
                 </View>
                 <View style={styles.actionRow}>
                     {actions.map((action, index) => (
-                        <TouchableOpacity key={index} style={styles.actionButton}>
+                        <TouchableOpacity key={index} style={styles.actionButton} onPress={() => handleAction(action.key)}>
                             <MaterialIcons name={action.icon} size={20} color="#fff" />
                             <Text style={styles.actionLabel}>{action.label}</Text>
                         </TouchableOpacity>
@@ -113,19 +127,6 @@ const BankDashboard = () => {
         </ScrollView>
     );
 };
-
-type MaterialIconName =
-    | "arrow-downward"
-    | "send"
-    | "arrow-upward"
-    | "shopping-cart";
-
-const actions: { label: string; icon: MaterialIconName }[] = [
-    { label: 'Transfer', icon: 'send' },
-    { label: 'Withdraw', icon: 'arrow-downward' },
-    { label: 'Deposit', icon: 'arrow-upward' },
-    { label: 'Pay & Buy', icon: 'shopping-cart' },
-];
 
 const styles = StyleSheet.create({
     infoCardsScroll: {

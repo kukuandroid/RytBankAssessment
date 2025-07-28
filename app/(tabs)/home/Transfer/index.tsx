@@ -1,29 +1,43 @@
-import React from 'react';
+import * as Contacts from 'expo-contacts';
+import React, { useEffect } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
-const contacts = [
-  { id: '1', name: 'Fatimah Azzahrah', phone: '+62 812-3456-7890', avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
-  { id: '2', name: 'Ahmad Fauzi', phone: '+62 813-9876-5432', avatar: 'https://randomuser.me/api/portraits/men/2.jpg' },
-  { id: '3', name: 'Siti Nurhaliza', phone: '+62 811-2233-4455', avatar: 'https://randomuser.me/api/portraits/women/3.jpg' },
-];
-
-const ContactItem = ({ name, phone, avatar }: { name: string; phone: string; avatar: string }) => (
+const ContactItem = (item: Contacts.Contact) => (
   <View style={styles.item}>
-    <Image source={{ uri: avatar }} style={styles.avatar} />
+    <Image source={{ uri: "https://www.svgrepo.com/show/508699/landscape-placeholder.svg" }} style={styles.avatar} />
     <View style={styles.info}>
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.phone}>{phone}</Text>
+      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.phone}>{item.company}</Text>
     </View>
   </View>
 );
 
 export default function ContactList() {
+
+  const [contacts, setContacts] = React.useState<Contacts.Contact[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+      if (status === 'granted') {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [Contacts.Fields.FirstName],
+        });
+        console.log("data", data)
+
+        if (data.length > 0) {
+          setContacts(data)
+        }
+      }
+    })();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Contacts</Text>
       <FlatList
         data={contacts}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id ?? ''}
         renderItem={({ item }) => <ContactItem {...item} />}
         contentContainerStyle={{ paddingBottom: 24 }}
       />
