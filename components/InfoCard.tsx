@@ -14,7 +14,6 @@ const InfoCard: React.FC<InfoCardProps> = ({ image, title, subtitle, amount }) =
       <Image source={{ uri: image }} style={styles.infoCardImage} />
     )}
     <View style={styles.infoCardTextContainer}>
-      {amount && <Text style={styles.infoCardAmount}>{amount}</Text>}
       <Text style={styles.infoCardTitle}>{title}</Text>
       <Text style={styles.infoCardSubtitle}>{subtitle}</Text>
     </View>
