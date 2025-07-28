@@ -42,12 +42,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     queryFn: async () => {
       const storedToken = await AsyncStorage.getItem('userToken');
       let storedUser = null;
+      console.log("🚀 ~ AuthProvider ~ storedToken:", storedToken)
       if (storedToken) {
         try {
           // In a real app, you might decode the JWT or fetch user data based on the token
           // For this fake backend, we'll simulate fetching user info if a token exists
           const userData = await apiFetch('/protected'); // Example: fetch user info with token
           storedUser = userData.user;
+          console.log("🚀 ~ AuthProvider ~ storedUser:", storedUser)
         } catch (error) {
           console.error("Failed to re-authenticate with stored token:", error);
           await AsyncStorage.removeItem('userToken'); // Clear invalid token
