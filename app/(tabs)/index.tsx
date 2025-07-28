@@ -17,8 +17,10 @@ const BankDashboard = () => {
         { amount: '$18.00', title: 'Promo 2', subtitle: 'giving activity this month', image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" },
     ];
 
+    // Set tab bar height to match your floating tab bar style
+    const TAB_BAR_HEIGHT = 64 + 24 + 80; // height + bottom + top margin
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: TAB_BAR_HEIGHT }}>
             {/* Header */}
             <View style={styles.header}>
                 <Text style={styles.bankName}>
@@ -76,6 +78,13 @@ const BankDashboard = () => {
                 ))}
             </ScrollView>
 
+            {/* Top Reads Section */}
+            <Text style={styles.sectionTitle}>Top Reads</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.infoCardsScroll} contentContainerStyle={{ paddingRight: 8 }}>
+                {topReads.map((item, idx) => (
+                    <InfoCard key={idx} image={item.image} title={item.title} subtitle={item.subtitle} />
+                ))}
+            </ScrollView>
             {/* Top Reads Section */}
             <Text style={styles.sectionTitle}>Top Reads</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.infoCardsScroll} contentContainerStyle={{ paddingRight: 8 }}>
