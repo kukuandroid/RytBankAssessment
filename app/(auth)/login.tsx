@@ -1,10 +1,28 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, { useState } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../context/AuthContext';
 
 const { width, height } = Dimensions.get('window');
 
 const LoginScreen: React.FC = () => {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { loginMutation } = useAuth(); // Get the login mutation
+
+
+  const handleLogin = async () => {
+    try {
+      await loginMutation.mutateAsync({ username, password });
+      // React Query's onSuccess will handle updating the 'auth' query and AsyncStorage
+      // The RootLayout will automatically redirect because isAuthenticated will become true
+    } catch (error: any) {
+      Alert.alert("Login Failed", error.message || "An unexpected error occurred.");
+    }
+  };
+
+
   const [showPassword, setShowPassword] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
@@ -22,12 +40,13 @@ const LoginScreen: React.FC = () => {
         </Text>
 
         {/* Email Address Input */}
-        <Text style={styles.inputLabel}>Email Address</Text>
+        <Text style={styles.inputLabel}>Username</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.textInput}
-            placeholder="Your Email Address"
-            keyboardType="email-address"
+            placeholder="Your Username"
+            keyboardType="default"
+            onChangeText={setUsername}
           />
         </View>
 
@@ -38,6 +57,7 @@ const LoginScreen: React.FC = () => {
             style={styles.textInput}
             placeholder="********"
             secureTextEntry={!showPassword}
+            onChangeText={setPassword}
           />
           <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
             <MaterialIcons
@@ -51,22 +71,18 @@ const LoginScreen: React.FC = () => {
 
         {/* Save Password & Forgot Password */}
         <View style={styles.optionsContainer}>
-          <TouchableOpacity style={styles.checkboxContainer}>
-            <MaterialIcons name="check-circle" size={20} color="#66BB6A" style={styles.checkboxIcon} />
-            <Text style={styles.savePasswordText}>Save Password</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => alert("Disabled in demo mode")}>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
 
         {/* Login Account Button */}
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login Account</Text>
         </TouchableOpacity>
 
         {/* Create New Account */}
-        <TouchableOpacity style={styles.createAccountButton}>
+        <TouchableOpacity style={styles.createAccountButton} onPress={() => alert("Disabled in demo demo")}>
           <Text style={styles.createAccountText}>Create New Account</Text>
         </TouchableOpacity>
       </View>

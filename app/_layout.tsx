@@ -1,29 +1,33 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+// app/_layout.tsx
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { AppProviders, useAuth } from './context/AuthContext';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  return (
+    <AppProviders> {/* Wrap with AppProviders which includes QueryClientProvider and AuthProvider */}
+      <RootLayoutNav />
+    </AppProviders>
+  );
+}
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+function RootLayoutNav() {
+  const { isAuthenticated, isLoadingAuth } = useAuth(); // Get authentication state
+  if (isLoadingAuth) {
+    // Render a splash screen or loading indicator while authentication status is being checked
+    return null; // Or <SplashScreen />
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <Stack>
+      {isAuthenticated ? (
+        // If authenticated, show the tabs
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+      ) : (
+        // If not authenticated, show the auth stack
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      )}
+      {/* Optionally, you can have global modals or other screens here that overlay everything */}
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
 }
